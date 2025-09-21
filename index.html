@@ -468,10 +468,30 @@
         box-shadow: 0 2px 8px var(--shadow);
     }
     
-    .decimal-hint {
-        font-size: 12px;
-        color: var(--text-secondary);
-        margin-top: 4px;
+    .decimal-input {
+        position: relative;
+    }
+    
+    .decimal-input input {
+        padding-right: 40px;
+    }
+    
+    .decimal-input::after {
+        content: ".";
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        color: #999;
+        background: #f0f0f0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -486,8 +506,7 @@
             <div class="input-row">
                 <div class="input-group">
                     <label for="defaultPrice">डिफ़ॉल्ट कीमत प्रति लीटर (₹):</label>
-                    <input type="number" id="defaultPrice" min="0" step="0.01" placeholder="कीमत प्रति लीटर" />
-                    <div class="decimal-hint">दशमलव के लिए बिंदु (.) का प्रयोग करें, उदा. 42.50</div>
+                    <input type="number" id="defaultPrice" min="0" step="0.01" placeholder="कीमत प्रति लीटर" inputmode="decimal" />
                 </div>
             </div>
             
@@ -501,7 +520,7 @@
             <div class="section-title"><i class="fas fa-users"></i> उत्पादक जानकारी</div>
             
             <label for="numProducers">उत्पादक की संख्या (लोग):</label>
-            <input type="number" id="numProducers" name="numProducers" min="1" value="1" placeholder="उत्पादक की संख्या" onchange="adjustProducerBlocks()" />
+            <input type="number" id="numProducers" name="numProducers" min="1" value="1" placeholder="उत्पादक की संख्या" onchange="adjustProducerBlocks()" inputmode="numeric" />
 
             <div id="producersContainer"></div>
 
@@ -590,18 +609,16 @@
             </div>
             
             <div class="input-row">
-                <div class="input-group">
+                <div class="input-group decimal-input">
                     <label for="quantity${producerId}">दूध की मात्रा (लीटर):</label>
                     <input type="text" id="quantity${producerId}" class="quantity" min="0" step="0.01" placeholder="दूध की मात्रा" required 
-                           oninput="validateDecimalInput(this)" />
-                    <div class="decimal-hint">दशमलव के लिए बिंदु (.) का प्रयोग करें, उदा. 5.5</div>
+                           oninput="validateDecimalInput(this)" inputmode="decimal" />
                 </div>
                 
-                <div class="input-group">
+                <div class="input-group decimal-input">
                     <label for="price${producerId}">कीमत प्रति लीटर (₹):</label>
                     <input type="text" id="price${producerId}" class="price" min="0" step="0.01" placeholder="दूध की कीमत" value="${defaultPrice || ''}" required 
-                           oninput="validateDecimalInput(this)" />
-                    <div class="decimal-hint">दशमलव के लिए बिंदु (.) का प्रयोग करें, उदा. 42.50</div>
+                           oninput="validateDecimalInput(this)" inputmode="decimal" />
                 </div>
             </div>
             
@@ -618,7 +635,8 @@
             <div class="input-row" id="daysInput-${producerId}">
                 <div class="input-group">
                     <label for="numDays${producerId}">दिनों की संख्या:</label>
-                    <input type="number" id="numDays${producerId}" value="1" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" />
+                    <input type="number" id="numDays${producerId}" value="1" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" 
+                           oninput="validateNumberInput(this)" inputmode="numeric" />
                 </div>
                 <div class="days-info" id="daysInfo-${producerId}">
                     <span>चयनित दिन:</span>
@@ -650,6 +668,38 @@
         updateNumProducersInput();
         setDefaultDatesForProducer(producerId);
         updateDaysInfo(producerId);
+        
+        // Add event listeners for decimal buttons
+        setTimeout(() => {
+            const quantityInput = document.getElementById(`quantity${producerId}`);
+            const priceInput = document.getElementById(`price${producerId}`);
+            
+            if (quantityInput) {
+                quantityInput.parentElement.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('decimal-input')) {
+                        const input = quantityInput;
+                        const value = input.value;
+                        if (!value.includes('.')) {
+                            input.value = value + '.';
+                            input.focus();
+                        }
+                    }
+                });
+            }
+            
+            if (priceInput) {
+                priceInput.parentElement.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('decimal-input')) {
+                        const input = priceInput;
+                        const value = input.value;
+                        if (!value.includes('.')) {
+                            input.value = value + '.';
+                            input.focus();
+                        }
+                    }
+                });
+            }
+        }, 100);
     }
     
     // Validate decimal inputs to prevent invalid values
@@ -657,13 +707,16 @@
         // Get the cursor position
         const cursorPosition = input.selectionStart;
         
+        // Replace comma with dot
+        let value = input.value.replace(/,/g, '.');
+        
         // Remove any non-numeric characters except decimal point
-        let value = input.value.replace(/[^0-9.]/g, '');
+        value = value.replace(/[^0-9.]/g, '');
         
         // Ensure only one decimal point
-        const decimalCount = (value.match(/\./g) || []).length;
-        if (decimalCount > 1) {
-            value = value.slice(0, -1);
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
         }
         
         // If the value starts with a decimal point, add a zero before it
@@ -676,6 +729,12 @@
         
         // Restore the cursor position
         input.setSelectionRange(cursorPosition, cursorPosition);
+    }
+    
+    // Validate number inputs to prevent non-numeric values
+    function validateNumberInput(input) {
+        // Remove any non-numeric characters
+        input.value = input.value.replace(/[^0-9]/g, '');
     }
 
     // Apply default price to all producers
@@ -862,8 +921,8 @@
         for (let i = 0; i < producerBlocks.length; i++) {
             const producerId = i + 1;
             const producerName = document.getElementById(`producerName${producerId}`)?.value || `उत्पादक #${producerId}`;
-            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value.replace(',', '.'));
-            const price = parseFloat(document.getElementById(`price${producerId}`).value.replace(',', '.'));
+            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value);
+            const price = parseFloat(document.getElementById(`price${producerId}`).value);
 
             if (isNaN(qty) || qty < 0 || isNaN(price) || price < 0) {
                 showNotification(`${producerName} के लिए वैध मात्रा और कीमत दर्ज करें`, 'error');
@@ -964,16 +1023,14 @@
     
     // Generate text version of results for sharing
     function generateResultText() {
-        let text = "════════════════════════════════════════\n";
-        text += "         दूध की कीमत कैलकुलेशन विवरण\n";
-        text += "════════════════════════════════════════\n\n";
+        let text = "दूध की कीमत कैलकुलेशन विवरण\n\n";
         
         const producerBlocks = document.querySelectorAll('.producerBlock');
         for (let i = 0; i < producerBlocks.length; i++) {
             const producerId = i + 1;
             const producerName = document.getElementById(`producerName${producerId}`)?.value || `उत्पादक #${producerId}`;
-            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value.replace(',', '.'));
-            const price = parseFloat(document.getElementById(`price${producerId}`).value.replace(',', '.'));
+            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value);
+            const price = parseFloat(document.getElementById(`price${producerId}`).value);
             
             let totalDays = 0;
             let periodText = '';
@@ -992,18 +1049,17 @@
 
             const totalPrice = qty * price * totalDays;
             
-            text += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`;
             text += `उत्पादक: ${producerName}\n`;
             text += `दूध की मात्रा: ${qty.toFixed(2)} लीटर\n`;
             text += `कीमत प्रति लीटर: ₹${price.toFixed(2)}\n`;
             text += `अवधि: ${periodText}\n`;
-            text += `कुल कीमत: ₹${totalPrice.toFixed(2)}\n`;
+            text += `कुल कीमत: ₹${totalPrice.toFixed(2)}\n\n`;
         }
         
         // Add overall summary
         const totalMilk = Array.from(document.querySelectorAll('.quantity')).reduce((sum, input, index) => {
             const producerId = index + 1;
-            const qty = parseFloat(input.value.replace(',', '.'));
+            const qty = parseFloat(input.value);
             let totalDays = 0;
 
             if (producerDateTypes[producerId] === 'days') {
@@ -1021,8 +1077,8 @@
         
         const overallTotal = Array.from(document.querySelectorAll('.price')).reduce((sum, input, index) => {
             const producerId = index + 1;
-            const price = parseFloat(input.value.replace(',', '.'));
-            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value.replace(',', '.'));
+            const price = parseFloat(input.value);
+            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value);
             let totalDays = 0;
 
             if (producerDateTypes[producerId] === 'days') {
@@ -1038,11 +1094,9 @@
             return sum + (qty * price * totalDays);
         }, 0);
         
-        text += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`;
         text += `कुल दूध: ${totalMilk.toFixed(2)} लीटर\n`;
         text += `कुल कीमत: ₹${overallTotal.toFixed(2)}\n\n`;
-        text += `कैलकुलेशन दिनांक: ${new Date().toLocaleDateString('hi-IN')}\n`;
-        text += "════════════════════════════════════════\n";
+        text += `कैलकुलेशन दिनांक: ${new Date().toLocaleDateString('hi-IN')}`;
         
         return text;
     }
