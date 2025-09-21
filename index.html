@@ -33,7 +33,7 @@
         font-family: 'Hind', sans-serif;
         background: var(--background);
         margin: 0;
-        padding: 15px;
+        padding: 10px;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -46,24 +46,24 @@
         background: var(--surface);
         max-width: 900px;
         width: 100%;
-        padding: 25px;
-        box-shadow: 0 5px 15px var(--shadow);
+        padding: 20px;
+        box-shadow: 0 4px 12px var(--shadow);
         border-radius: 12px;
-        margin: 15px 0;
+        margin: 10px 0;
     }
 
     h1 {
         text-align: center;
         color: var(--primary);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         font-weight: 700;
-        font-size: 24px;
-        padding-bottom: 12px;
+        font-size: 22px;
+        padding-bottom: 10px;
         border-bottom: 2px solid var(--border);
     }
 
     .form-section {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         padding: 15px;
         background: #f8fbff;
         border-radius: 8px;
@@ -94,11 +94,11 @@
 
     select, input[type="number"], input[type="date"], input[type="text"] {
         width: 100%;
-        padding: 10px 12px;
+        padding: 12px;
         margin-top: 6px;
-        border-radius: 6px;
+        border-radius: 8px;
         border: 1.5px solid var(--border);
-        font-size: 15px;
+        font-size: 16px;
         transition: all 0.3s ease;
         background: white;
     }
@@ -113,20 +113,21 @@
         background-color: var(--primary);
         color: white;
         border: none;
-        padding: 12px 16px;
-        font-size: 15px;
+        padding: 14px 16px;
+        font-size: 16px;
         margin-top: 15px;
         cursor: pointer;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: 600;
         transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
     }
 
     button i {
-        margin-right: 6px;
+        margin-right: 8px;
     }
 
     button:hover {
@@ -169,10 +170,9 @@
 
     .buttons {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         gap: 12px;
         margin-top: 20px;
-        flex-wrap: wrap;
     }
 
     .producerBlock {
@@ -207,8 +207,8 @@
         background: var(--error);
         color: white;
         border: none;
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -220,43 +220,43 @@
 
     .input-row {
         display: flex;
+        flex-direction: column;
         gap: 12px;
         margin-bottom: 12px;
-        flex-wrap: wrap;
     }
 
     .input-group {
-        flex: 1;
-        min-width: 150px;
+        width: 100%;
     }
 
-    table {
+    .results-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 25px;
-        font-size: 15px;
+        margin-top: 20px;
+        font-size: 14px;
         box-shadow: 0 2px 8px var(--shadow);
         border-radius: 8px;
         overflow: hidden;
     }
 
-    th, td {
-        padding: 12px;
+    .results-table th, .results-table td {
+        padding: 12px 8px;
         border-bottom: 1px solid #e0e0e0;
         text-align: center;
     }
 
-    th {
+    .results-table th {
         background-color: var(--primary);
         color: white;
         font-weight: 600;
+        font-size: 14px;
     }
 
-    tr:nth-child(even) {
+    .results-table tr:nth-child(even) {
         background-color: #f5f5f5;
     }
 
-    tr:hover {
+    .results-table tr:hover {
         background-color: #e3f2fd;
     }
 
@@ -265,78 +265,70 @@
         font-weight: 700;
         font-size: 18px;
         color: var(--secondary);
-        text-align: right;
-        padding: 12px;
+        text-align: center;
+        padding: 15px;
         background: #e8f5e9;
         border-radius: 8px;
+        line-height: 1.8;
     }
 
     .summary-card {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         background: white;
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 4px 8px var(--shadow);
         margin-top: 20px;
-        flex-wrap: wrap;
+        gap: 15px;
     }
 
     .summary-item {
         text-align: center;
-        padding: 0 12px;
-        flex: 1;
-        min-width: 120px;
+        padding: 10px;
+        background: #f8fbff;
+        border-radius: 8px;
     }
 
     .summary-value {
         font-size: 20px;
         font-weight: 700;
         color: var(--primary);
+        margin-bottom: 5px;
     }
 
     .summary-label {
-        font-size: 13px;
+        font-size: 14px;
         color: var(--text-secondary);
     }
 
-    @media (max-width: 768px) {
+    @media (min-width: 768px) {
         .container {
-            padding: 15px;
+            padding: 25px;
         }
         
         .input-row {
-            flex-direction: column;
-            gap: 0;
+            flex-direction: row;
         }
         
         .input-group {
-            width: 100%;
-            min-width: 100%;
+            flex: 1;
         }
         
         .buttons {
-            flex-direction: column;
+            flex-direction: row;
         }
         
         button {
-            width: 100%;
-            margin-top: 10px;
+            width: auto;
         }
         
         .summary-card {
-            flex-direction: column;
-            gap: 15px;
+            flex-direction: row;
         }
         
         .summary-item {
-            min-width: 100%;
-            margin-bottom: 10px;
-        }
-        
-        table, th, td {
-            font-size: 14px;
-            padding: 8px;
+            flex: 1;
         }
     }
 
@@ -352,16 +344,16 @@
     }
 
     .date-type-btn {
-        padding: 8px 12px;
+        padding: 10px 12px;
         border: 1.5px solid var(--border);
-        border-radius: 6px;
+        border-radius: 8px;
         background: white;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.3s ease;
         flex: 1;
         text-align: center;
-        min-width: 110px;
+        min-width: 120px;
         font-size: 14px;
     }
 
@@ -377,8 +369,8 @@
     
     .days-info {
         background-color: #e3f2fd;
-        padding: 8px 12px;
-        border-radius: 6px;
+        padding: 10px 12px;
+        border-radius: 8px;
         margin-top: 8px;
         font-weight: 600;
         color: var(--primary);
@@ -400,7 +392,7 @@
     .calendar-container i {
         position: absolute;
         right: 12px;
-        top: 38px;
+        top: 42px;
         color: var(--primary);
         font-size: 18px;
     }
@@ -450,10 +442,30 @@
     
     .share-buttons {
         display: flex;
+        flex-direction: column;
         gap: 10px;
         margin-top: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
+    }
+    
+    @media (min-width: 480px) {
+        .share-buttons {
+            flex-direction: row;
+        }
+    }
+    
+    .result-section {
+        margin-top: 25px;
+        padding: 20px;
+        background: #f8fbff;
+        border-radius: 10px;
+        border-left: 4px solid var(--primary);
+    }
+    
+    .table-container {
+        overflow-x: auto;
+        margin: 15px 0;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px var(--shadow);
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -812,16 +824,17 @@
         let overallTotal = 0;
         let totalMilk = 0;
         let resultHTML = `
-            <div class="form-section">
+            <div class="result-section">
                 <div class="section-title"><i class="fas fa-list-alt"></i> परिणाम सारांश</div>
-                <table>
-                    <tr>
-                        <th>उत्पादक</th>
-                        <th>दूध (लीटर)</th>
-                        <th>कीमत/लीटर (₹)</th>
-                        <th>अवधि</th>
-                        <th>कुल कीमत (₹)</th>
-                    </tr>
+                <div class="table-container">
+                    <table class="results-table">
+                        <tr>
+                            <th>उत्पादक</th>
+                            <th>दूध (लीटर)</th>
+                            <th>कीमत/लीटर (₹)</th>
+                            <th>अवधि</th>
+                            <th>कुल कीमत (₹)</th>
+                        </tr>
         `;
 
         for (let i = 0; i < producerBlocks.length; i++) {
@@ -882,35 +895,36 @@
         }
 
         resultHTML += `
-                </table>
+                    </table>
+                </div>
                 <p class="resultSummary">
                     कुल दूध: ${totalMilk.toFixed(2)} लीटर<br>
                     कुल कीमत: ₹${overallTotal.toFixed(2)}
                 </p>
-            </div>
             
-            <div class="summary-card">
-                <div class="summary-item">
-                    <div class="summary-value">${producerBlocks.length}</div>
-                    <div class="summary-label">उत्पादक</div>
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <div class="summary-value">${producerBlocks.length}</div>
+                        <div class="summary-label">उत्पादक</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">${totalMilk.toFixed(2)}</div>
+                        <div class="summary-label">लिटर दूध</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">₹${overallTotal.toFixed(2)}</div>
+                        <div class="summary-label">कुल कीमत</div>
+                    </div>
                 </div>
-                <div class="summary-item">
-                    <div class="summary-value">${totalMilk.toFixed(2)}</div>
-                    <div class="summary-label">लिटर दूध</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-value">₹${overallTotal.toFixed(2)}</div>
-                    <div class="summary-label">कुल कीमत</div>
-                </div>
-            </div>
             
-            <div class="share-buttons">
-                <button class="success" onclick="shareViaWhatsApp()">
-                    <i class="fab fa-whatsapp"></i> WhatsApp पर साझा करें
-                </button>
-                <button class="secondary" onclick="downloadAsText()">
-                    <i class="fas fa-download"></i> टेक्स्ट फ़ाइल डाउनलोड करें
-                </button>
+                <div class="share-buttons">
+                    <button class="success" onclick="shareViaWhatsApp()">
+                        <i class="fab fa-whatsapp"></i> WhatsApp पर साझा करें
+                    </button>
+                    <button class="secondary" onclick="downloadAsText()">
+                        <i class="fas fa-download"></i> टेक्स्ट फ़ाइल डाउनलोड करें
+                    </button>
+                </div>
             </div>
         `;
 
@@ -932,7 +946,7 @@
     // Download results as text file
     function downloadAsText() {
         const resultText = generateResultText();
-        const blob = new Blob([resultText], { type: 'text/plain' });
+        const blob = new Blob([resultText], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -945,7 +959,9 @@
     
     // Generate text version of results for sharing
     function generateResultText() {
-        let text = "दूध की कीमत कैलकुलेशन विवरण\n\n";
+        let text = "════════════════════════════════════════\n";
+        text += "         दूध की कीमत कैलकुलेशन विवरण\n";
+        text += "════════════════════════════════════════\n\n";
         
         const producerBlocks = document.querySelectorAll('.producerBlock');
         for (let i = 0; i < producerBlocks.length; i++) {
@@ -971,11 +987,12 @@
 
             const totalPrice = qty * price * totalDays;
             
+            text += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`;
             text += `उत्पादक: ${producerName}\n`;
-            text += `दूध: ${qty.toFixed(2)} लीटर\n`;
-            text += `कीमत: ₹${price.toFixed(2)} प्रति लीटर\n`;
+            text += `दूध की मात्रा: ${qty.toFixed(2)} लीटर\n`;
+            text += `कीमत प्रति लीटर: ₹${price.toFixed(2)}\n`;
             text += `अवधि: ${periodText}\n`;
-            text += `कुल: ₹${totalPrice.toFixed(2)}\n\n`;
+            text += `कुल कीमत: ₹${totalPrice.toFixed(2)}\n`;
         }
         
         // Add overall summary
@@ -1016,9 +1033,11 @@
             return sum + (qty * price * totalDays);
         }, 0);
         
+        text += `▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n`;
         text += `कुल दूध: ${totalMilk.toFixed(2)} लीटर\n`;
         text += `कुल कीमत: ₹${overallTotal.toFixed(2)}\n\n`;
-        text += `कैलकुलेशन दिनांक: ${new Date().toLocaleDateString('hi-IN')}`;
+        text += `कैलकुलेशन दिनांक: ${new Date().toLocaleDateString('hi-IN')}\n`;
+        text += "════════════════════════════════════════\n";
         
         return text;
     }
