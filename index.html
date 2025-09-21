@@ -467,6 +467,12 @@
         border-radius: 8px;
         box-shadow: 0 2px 8px var(--shadow);
     }
+    
+    .decimal-hint {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -481,6 +487,7 @@
                 <div class="input-group">
                     <label for="defaultPrice">डिफ़ॉल्ट कीमत प्रति लीटर (₹):</label>
                     <input type="number" id="defaultPrice" min="0" step="0.01" placeholder="कीमत प्रति लीटर" />
+                    <div class="decimal-hint">दशमलव के लिए बिंदु (.) का प्रयोग करें, उदा. 42.50</div>
                 </div>
             </div>
             
@@ -585,14 +592,16 @@
             <div class="input-row">
                 <div class="input-group">
                     <label for="quantity${producerId}">दूध की मात्रा (लीटर):</label>
-                    <input type="number" id="quantity${producerId}" class="quantity" min="0" step="0.01" placeholder="दूध की मात्रा" required 
-                           oninput="validateNumberInput(this)" />
+                    <input type="text" id="quantity${producerId}" class="quantity" min="0" step="0.01" placeholder="दूध की मात्रा" required 
+                           oninput="validateDecimalInput(this)" />
+                    <div class="decimal-hint">दशमलव के लिए बिंदु (.) का प्रयोग करें, उदा. 5.5</div>
                 </div>
                 
                 <div class="input-group">
                     <label for="price${producerId}">कीमत प्रति लीटर (₹):</label>
-                    <input type="number" id="price${producerId}" class="price" min="0" step="0.01" placeholder="दूध की कीमत" value="${defaultPrice || ''}" required 
-                           oninput="validateNumberInput(this)" />
+                    <input type="text" id="price${producerId}" class="price" min="0" step="0.01" placeholder="दूध की कीमत" value="${defaultPrice || ''}" required 
+                           oninput="validateDecimalInput(this)" />
+                    <div class="decimal-hint">दशमलव के लिए बिंदु (.) का प्रयोग करें, उदा. 42.50</div>
                 </div>
             </div>
             
@@ -609,8 +618,7 @@
             <div class="input-row" id="daysInput-${producerId}">
                 <div class="input-group">
                     <label for="numDays${producerId}">दिनों की संख्या:</label>
-                    <input type="number" id="numDays${producerId}" value="1" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" 
-                           oninput="validateNumberInput(this)" />
+                    <input type="number" id="numDays${producerId}" value="1" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" />
                 </div>
                 <div class="days-info" id="daysInfo-${producerId}">
                     <span>चयनित दिन:</span>
@@ -644,16 +652,30 @@
         updateDaysInfo(producerId);
     }
     
-    // Validate number inputs to prevent non-numeric values
-    function validateNumberInput(input) {
+    // Validate decimal inputs to prevent invalid values
+    function validateDecimalInput(input) {
+        // Get the cursor position
+        const cursorPosition = input.selectionStart;
+        
         // Remove any non-numeric characters except decimal point
-        input.value = input.value.replace(/[^0-9.]/g, '');
+        let value = input.value.replace(/[^0-9.]/g, '');
         
         // Ensure only one decimal point
-        const decimalCount = (input.value.match(/\./g) || []).length;
+        const decimalCount = (value.match(/\./g) || []).length;
         if (decimalCount > 1) {
-            input.value = input.value.slice(0, -1);
+            value = value.slice(0, -1);
         }
+        
+        // If the value starts with a decimal point, add a zero before it
+        if (value.startsWith('.')) {
+            value = '0' + value;
+        }
+        
+        // Update the input value
+        input.value = value;
+        
+        // Restore the cursor position
+        input.setSelectionRange(cursorPosition, cursorPosition);
     }
 
     // Apply default price to all producers
@@ -840,8 +862,8 @@
         for (let i = 0; i < producerBlocks.length; i++) {
             const producerId = i + 1;
             const producerName = document.getElementById(`producerName${producerId}`)?.value || `उत्पादक #${producerId}`;
-            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value);
-            const price = parseFloat(document.getElementById(`price${producerId}`).value);
+            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value.replace(',', '.'));
+            const price = parseFloat(document.getElementById(`price${producerId}`).value.replace(',', '.'));
 
             if (isNaN(qty) || qty < 0 || isNaN(price) || price < 0) {
                 showNotification(`${producerName} के लिए वैध मात्रा और कीमत दर्ज करें`, 'error');
@@ -921,9 +943,6 @@
                     <button class="success" onclick="shareViaWhatsApp()">
                         <i class="fab fa-whatsapp"></i> WhatsApp पर साझा करें
                     </button>
-                    <button class="secondary" onclick="downloadAsText()">
-                        <i class="fas fa-download"></i> टेक्स्ट फ़ाइल डाउनलोड करें
-                    </button>
                 </div>
             </div>
         `;
@@ -943,20 +962,6 @@
         window.open(`https://wa.me/?text=${encodedText}`, '_blank');
     }
     
-    // Download results as text file
-    function downloadAsText() {
-        const resultText = generateResultText();
-        const blob = new Blob([resultText], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'दूध_की_कीमत_विवरण.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-    
     // Generate text version of results for sharing
     function generateResultText() {
         let text = "════════════════════════════════════════\n";
@@ -967,8 +972,8 @@
         for (let i = 0; i < producerBlocks.length; i++) {
             const producerId = i + 1;
             const producerName = document.getElementById(`producerName${producerId}`)?.value || `उत्पादक #${producerId}`;
-            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value);
-            const price = parseFloat(document.getElementById(`price${producerId}`).value);
+            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value.replace(',', '.'));
+            const price = parseFloat(document.getElementById(`price${producerId}`).value.replace(',', '.'));
             
             let totalDays = 0;
             let periodText = '';
@@ -998,7 +1003,7 @@
         // Add overall summary
         const totalMilk = Array.from(document.querySelectorAll('.quantity')).reduce((sum, input, index) => {
             const producerId = index + 1;
-            const qty = parseFloat(input.value);
+            const qty = parseFloat(input.value.replace(',', '.'));
             let totalDays = 0;
 
             if (producerDateTypes[producerId] === 'days') {
@@ -1016,8 +1021,8 @@
         
         const overallTotal = Array.from(document.querySelectorAll('.price')).reduce((sum, input, index) => {
             const producerId = index + 1;
-            const price = parseFloat(input.value);
-            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value);
+            const price = parseFloat(input.value.replace(',', '.'));
+            const qty = parseFloat(document.getElementById(`quantity${producerId}`).value.replace(',', '.'));
             let totalDays = 0;
 
             if (producerDateTypes[producerId] === 'days') {
