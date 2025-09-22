@@ -21,6 +21,22 @@
         --shadow: rgba(0, 0, 0, 0.1);
         --success: #388e3c;
         --warning: #f57c00;
+        
+        /* Dark mode variables */
+        --dark-bg: #1a1a1a;
+        --dark-surface: #2d2d2d;
+        --dark-text: #e0e0e0;
+        --dark-border: #555555;
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+        --background: var(--dark-bg);
+        --surface: var(--dark-surface);
+        --text-primary: var(--dark-text);
+        --text-secondary: #aaaaaa;
+        --border: var(--dark-border);
+        --secondary-light: #2d4d2e;
     }
 
     * {
@@ -40,6 +56,7 @@
         min-height: 100vh;
         color: var(--text-primary);
         line-height: 1.6;
+        transition: background-color 0.3s, color 0.3s;
     }
 
     .container {
@@ -50,6 +67,25 @@
         box-shadow: 0 4px 12px var(--shadow);
         border-radius: 12px;
         margin: 10px 0;
+        transition: background-color 0.3s;
+        position: relative;
+    }
+
+    .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+        position: relative;
+    }
+
+    .app-title-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
     }
 
     h1 {
@@ -62,12 +98,41 @@
         border-bottom: 2px solid var(--border);
     }
 
+    .app-icon {
+        font-size: 28px;
+        color: var(--primary);
+    }
+
+    .theme-toggle {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s;
+        font-size: 14px;
+    }
+
+    .theme-toggle:hover {
+        background: var(--primary-dark);
+    }
+
     .form-section {
         margin-bottom: 15px;
         padding: 15px;
         background: #f8fbff;
         border-radius: 8px;
         border-left: 4px solid var(--primary);
+        transition: background-color 0.3s;
+    }
+
+    body.dark-mode .form-section {
+        background: #2a3b4d;
     }
 
     .section-title {
@@ -100,7 +165,8 @@
         border: 1.5px solid var(--border);
         font-size: 16px;
         transition: all 0.3s ease;
-        background: white;
+        background: var(--surface);
+        color: var(--text-primary);
     }
 
     select:focus, input[type="number"]:focus, input[type="date"]:focus, input[type="text"]:focus {
@@ -256,8 +322,16 @@
         background-color: #f5f5f5;
     }
 
+    body.dark-mode .results-table tr:nth-child(even) {
+        background-color: #3d3d3d;
+    }
+
     .results-table tr:hover {
         background-color: #e3f2fd;
+    }
+
+    body.dark-mode .results-table tr:hover {
+        background-color: #37474f;
     }
 
     .resultSummary {
@@ -270,17 +344,23 @@
         background: #e8f5e9;
         border-radius: 8px;
         line-height: 1.8;
+        transition: background-color 0.3s;
+    }
+
+    body.dark-mode .resultSummary {
+        background: #2d4d2e;
     }
 
     .summary-card {
         display: flex;
         flex-direction: column;
-        background: white;
+        background: var(--surface);
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 4px 8px var(--shadow);
         margin-top: 20px;
         gap: 15px;
+        transition: background-color 0.3s;
     }
 
     .summary-item {
@@ -288,6 +368,11 @@
         padding: 10px;
         background: #f8fbff;
         border-radius: 8px;
+        transition: background-color 0.3s;
+    }
+
+    body.dark-mode .summary-item {
+        background: #2a3b4d;
     }
 
     .summary-value {
@@ -330,6 +415,31 @@
         .summary-item {
             flex: 1;
         }
+        
+        h1 {
+            font-size: 24px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .app-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .theme-toggle {
+            align-self: flex-end;
+            margin-top: 10px;
+        }
+        
+        .app-title-container {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-size: 20px;
+        }
     }
 
     .hidden {
@@ -347,7 +457,7 @@
         padding: 10px 12px;
         border: 1.5px solid var(--border);
         border-radius: 8px;
-        background: white;
+        background: var(--surface);
         cursor: pointer;
         font-weight: 600;
         transition: all 0.3s ease;
@@ -355,6 +465,7 @@
         text-align: center;
         min-width: 120px;
         font-size: 14px;
+        color: var(--text-primary);
     }
 
     .date-type-btn.active {
@@ -378,6 +489,11 @@
         align-items: center;
         justify-content: space-between;
         font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    body.dark-mode .days-info {
+        background-color: #2a3b4d;
     }
     
     .days-count {
@@ -409,6 +525,11 @@
         padding: 15px;
         border-radius: 8px;
         margin-bottom: 20px;
+        transition: background-color 0.3s;
+    }
+
+    body.dark-mode .default-price-section {
+        background-color: #4a3c22;
     }
     
     .apply-price-btn {
@@ -459,6 +580,11 @@
         background: #f8fbff;
         border-radius: 10px;
         border-left: 4px solid var(--primary);
+        transition: background-color 0.3s;
+    }
+
+    body.dark-mode .result-section {
+        background: #2a3b4d;
     }
     
     .table-container {
@@ -493,12 +619,297 @@
         border-radius: 50%;
         cursor: pointer;
     }
+
+    .print-button {
+        background-color: #6a1b9a;
+    }
+
+    .print-button:hover {
+        background-color: #4a148c;
+    }
+
+    .share-image-button {
+        background-color: #00bfa5;
+    }
+
+    .share-image-button:hover {
+        background-color: #009688;
+    }
+
+    .input-hint {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+        font-style: italic;
+    }
+
+    .calculation-date {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+    
+    /* Print styles */
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #result, #result * {
+            visibility: visible;
+        }
+        #result {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            box-shadow: none;
+        }
+        .share-buttons, .app-header, .form-section, .default-price-section {
+            display: none !important;
+        }
+    }
+    
+    .producer-count-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        background: #e3f2fd;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        transition: background-color 0.3s;
+    }
+
+    body.dark-mode .producer-count-container {
+        background: #2a3b4d;
+    }
+    
+    .producer-count-input {
+        flex: 1;
+    }
+    
+    .producer-count-label {
+        font-weight: 600;
+        color: var(--primary);
+        white-space: nowrap;
+    }
+    
+    .auto-update-note {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 5px;
+        font-style: italic;
+        text-align: center;
+    }
+    
+    .whatsapp-message-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--surface);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        z-index: 1001;
+        max-width: 90%;
+        max-height: 80%;
+        overflow-y: auto;
+        display: none;
+    }
+    
+    .whatsapp-message-container.active {
+        display: block;
+    }
+    
+    .whatsapp-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: none;
+    }
+    
+    .whatsapp-overlay.active {
+        display: block;
+    }
+    
+    .whatsapp-message {
+        white-space: pre-line;
+        margin-bottom: 15px;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    
+    .whatsapp-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+    
+    .copy-button {
+        background-color: #25D366;
+    }
+    
+    .copy-button:hover {
+        background-color: #128C7E;
+    }
+
+    /* Custom confirmation dialog */
+    .confirmation-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .confirmation-dialog.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .dialog-content {
+        background: var(--surface);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+    }
+
+    .dialog-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .dialog-message {
+        margin-bottom: 20px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    .dialog-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .dialog-button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .dialog-confirm {
+        background: var(--error);
+        color: white;
+    }
+
+    .dialog-confirm:hover {
+        background: #b71c1c;
+    }
+
+    .dialog-cancel {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    .dialog-cancel:hover {
+        background: #bdbdbd;
+    }
+
+    body.dark-mode .dialog-cancel {
+        background: #555;
+        color: white;
+    }
+
+    body.dark-mode .dialog-cancel:hover {
+        background: #777;
+    }
+
+    .credit {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 14px;
+        color: var(--text-secondary);
+        border-top: 1px solid var(--border);
+    }
+
+    .created-by {
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .creator-input {
+        border: none !important;
+        background: transparent !important;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+        width: 150px;
+        padding: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    @media (max-width: 768px) {
+        .whatsapp-buttons {
+            flex-direction: column;
+        }
+        
+        .dialog-buttons {
+            flex-direction: column;
+        }
+        
+        .app-header {
+            flex-direction: column;
+        }
+        
+        .theme-toggle {
+            align-self: flex-end;
+            margin-top: 10px;
+        }
+    }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1><i class="fas fa-calculator icon"></i>दूध की कीमत कैलकुलेटर</h1>
+        <div class="app-header">
+            <div class="app-title-container">
+                <i class="fas fa-cow app-icon"></i>
+                <h1>दूध की कीमत कैलकुलेटर</h1>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i> डार्क मोड
+            </button>
+        </div>
 
         <div class="default-price-section">
             <div class="section-title"><i class="fas fa-tag"></i> डिफ़ॉल्ट दूध की कीमत</div>
@@ -507,54 +918,132 @@
                 <div class="input-group">
                     <label for="defaultPrice">डिफ़ॉल्ट कीमत प्रति लीटर (₹):</label>
                     <input type="number" id="defaultPrice" min="0" step="0.01" placeholder="कीमत प्रति लीटर" inputmode="decimal" />
+                    <div class="input-hint">यह कीमत नए उत्पादकों के लिए स्वचालित रूप से लागू होगी</div>
                 </div>
             </div>
             
             <button type="button" class="warning apply-price-btn" onclick="applyDefaultPrice()">
                 <i class="fas fa-check-circle"></i> सभी उत्पादकों पर लागू करें
             </button>
-            <div class="help-text">यह कीमत नए उत्पादकों के लिए स्वचालित रूप से लागू होगी</div>
         </div>
 
         <div class="form-section">
             <div class="section-title"><i class="fas fa-users"></i> उत्पादक जानकारी</div>
             
-            <label for="numProducers">उत्पादक की संख्या (लोग):</label>
-            <input type="number" id="numProducers" name="numProducers" min="1" value="1" placeholder="उत्पादक की संख्या" onchange="adjustProducerBlocks()" inputmode="numeric" />
+            <div class="producer-count-container">
+                <span class="producer-count-label">उत्पादकों की संख्या:</span>
+                <div class="input-group producer-count-input">
+                    <input type="number" id="numProducers" name="numProducers" min="1" value="1" placeholder="उत्पादक की संख्या" onchange="adjustProducerBlocks()" inputmode="numeric" />
+                </div>
+            </div>
+            <div class="auto-update-note">उत्पादक जोड़ने/हटाने पर संख्या स्वचालित रूप से अपडेट होगी</div>
 
             <div id="producersContainer"></div>
 
             <div class="buttons">
                 <button type="button" onclick="addProducer()"><i class="fas fa-plus"></i> उत्पादक जोड़ें</button>
                 <button type="button" class="secondary" onclick="calculatePrices()"><i class="fas fa-calculator"></i> कीमत निकालें</button>
-                <button type="button" class="danger" onclick="resetForm()"><i class="fas fa-redo"></i> रीसेट करें</button>
+                <button type="button" class="danger" onclick="showResetConfirmation()"><i class="fas fa-redo"></i> रीसेट करें</button>
             </div>
         </div>
 
         <div id="result" class="hidden"></div>
+        
+        <div class="credit">
+            <span class="created-by">Created by: </span>
+            <input type="text" id="creatorName" class="creator-input" placeholder="आपका नाम" />
+        </div>
     </div>
 
     <div id="notification" class="notification"></div>
+    
+    <div id="whatsappOverlay" class="whatsapp-overlay"></div>
+    <div id="whatsappMessageContainer" class="whatsapp-message-container">
+        <h3><i class="fab fa-whatsapp"></i> WhatsApp संदेश</h3>
+        <div id="whatsappMessage" class="whatsapp-message"></div>
+        <div class="whatsapp-buttons">
+            <button type="button" class="danger" onclick="closeWhatsAppMessage()"><i class="fas fa-times"></i> बंद करें</button>
+            <button type="button" class="copy-button" onclick="copyWhatsAppMessage()"><i class="fas fa-copy"></i> कॉपी करें</button>
+            <button type="button" class="success" onclick="openWhatsApp()"><i class="fab fa-whatsapp"></i> WhatsApp खोलें</button>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Dialog -->
+    <div class="confirmation-dialog" id="confirmationDialog">
+        <div class="dialog-content">
+            <div class="dialog-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>क्या आप सुनिश्चित हैं?</span>
+            </div>
+            <div class="dialog-message">
+                क्या आप वाकई फॉर्म रीसेट करना चाहते हैं? सभी डेटा हट जाएगा।
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-button dialog-cancel" onclick="hideResetConfirmation()">रद्द करें</button>
+                <button class="dialog-button dialog-confirm" onclick="resetForm()">रीसेट करें</button>
+            </div>
+        </div>
+    </div>
 
 <script>
     let producersCount = 0;
     let producerDateTypes = {}; // Store date type for each producer
     let defaultPrice = 0;
+    let currentWhatsAppMessage = '';
+    let isDarkMode = localStorage.getItem('darkMode') === 'true';
 
     // Initialize the form
     function init() {
+        // Set theme based on saved preference
+        if (isDarkMode) {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
+        
         addProducer();
         setDefaultDates();
         
-        // Load default price from localStorage if available
-        const savedPrice = localStorage.getItem('milkDefaultPrice');
-        if (savedPrice) {
-            document.getElementById('defaultPrice').value = savedPrice;
-            defaultPrice = parseFloat(savedPrice);
-        }
+        // Load saved data from localStorage if available
+        loadData();
         
         // Set min/max years for date inputs
         setupDateInputRestrictions();
+        
+        // Setup theme toggle event listener
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        
+        // Load creator name if available
+        const savedName = localStorage.getItem('creatorName');
+        if (savedName) {
+            document.getElementById('creatorName').value = savedName;
+        }
+        
+        // Save creator name on input
+        document.getElementById('creatorName').addEventListener('input', function() {
+            localStorage.setItem('creatorName', this.value);
+        });
+    }
+    
+    // Toggle between dark and light mode
+    function toggleTheme() {
+        if (isDarkMode) {
+            disableDarkMode();
+        } else {
+            enableDarkMode();
+        }
+        isDarkMode = !isDarkMode;
+        localStorage.setItem('darkMode', isDarkMode);
+    }
+    
+    function enableDarkMode() {
+        document.body.classList.add('dark-mode');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i> लाइट मोड';
+    }
+    
+    function disableDarkMode() {
+        document.body.classList.remove('dark-mode');
+        document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i> डार्क मोड';
     }
     
     // Set up date input restrictions to ensure 4-digit years and reasonable date ranges
@@ -583,13 +1072,13 @@
     }
 
     // Add a new producer block
-    function addProducer() {
+    function addProducer(producerData = null) {
         producersCount++;
         const container = document.getElementById('producersContainer');
         const producerId = producersCount;
 
         // Initialize date type for this producer
-        producerDateTypes[producerId] = 'days';
+        producerDateTypes[producerId] = producerData?.dateType || 'days';
 
         const div = document.createElement('div');
         div.className = 'producerBlock';
@@ -604,7 +1093,7 @@
             <div class="input-row">
                 <div class="input-group">
                     <label for="producerName${producerId}">उत्पादक का नाम (वैकल्पिक):</label>
-                    <input type="text" id="producerName${producerId}" placeholder="उत्पादक का नाम" />
+                    <input type="text" id="producerName${producerId}" placeholder="उत्पादक का नाम" value="${producerData?.name || ''}" />
                 </div>
             </div>
             
@@ -612,49 +1101,49 @@
                 <div class="input-group decimal-input">
                     <label for="quantity${producerId}">दूध की मात्रा (लीटर):</label>
                     <input type="text" id="quantity${producerId}" class="quantity" min="0" step="0.01" placeholder="दूध की मात्रा" required 
-                           oninput="validateDecimalInput(this)" inputmode="decimal" />
+                           oninput="validateDecimalInput(this)" inputmode="decimal" value="${producerData?.quantity || ''}" />
                 </div>
                 
                 <div class="input-group decimal-input">
                     <label for="price${producerId}">कीमत प्रति लीटर (₹):</label>
-                    <input type="text" id="price${producerId}" class="price" min="0" step="0.01" placeholder="दूध की कीमत" value="${defaultPrice || ''}" required 
+                    <input type="text" id="price${producerId}" class="price" min="0" step="0.01" placeholder="दूध की कीमत" value="" required 
                            oninput="validateDecimalInput(this)" inputmode="decimal" />
                 </div>
             </div>
             
             <label>समय अवधि चुनें:</label>
             <div class="date-type-selector">
-                <div class="date-type-btn active" id="days-btn-${producerId}" onclick="setDateType(${producerId}, 'days')">
+                <div class="date-type-btn ${producerDateTypes[producerId] === 'days' ? 'active' : ''}" id="days-btn-${producerId}" onclick="setDateType(${producerId}, 'days')">
                     <i class="fas fa-calendar-day icon"></i>दिनों का चयन
                 </div>
-                <div class="date-type-btn" id="dateRange-btn-${producerId}" onclick="setDateType(${producerId}, 'dateRange')">
+                <div class="date-type-btn ${producerDateTypes[producerId] === 'dateRange' ? 'active' : ''}" id="dateRange-btn-${producerId}" onclick="setDateType(${producerId}, 'dateRange')">
                     <i class="fas fa-calendar-alt icon"></i>तारीख से तारीख
                 </div>
             </div>
             
-            <div class="input-row" id="daysInput-${producerId}">
+            <div class="input-row ${producerDateTypes[producerId] === 'days' ? '' : 'hidden'}" id="daysInput-${producerId}">
                 <div class="input-group">
                     <label for="numDays${producerId}">दिनों की संख्या:</label>
-                    <input type="number" id="numDays${producerId}" value="1" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" 
+                    <input type="number" id="numDays${producerId}" value="" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" 
                            oninput="validateNumberInput(this)" inputmode="numeric" />
                 </div>
                 <div class="days-info" id="daysInfo-${producerId}">
                     <span>चयनित दिन:</span>
-                    <span class="days-count" id="daysCount-${producerId}">1 दिन</span>
+                    <span class="days-count" id="daysCount-${producerId}">0 दिन</span>
                 </div>
             </div>
             
-            <div class="input-row hidden" id="dateRangeInput-${producerId}">
+            <div class="input-row ${producerDateTypes[producerId] === 'dateRange' ? '' : 'hidden'}" id="dateRangeInput-${producerId}">
                 <div class="input-group calendar-container">
                     <label for="startDate${producerId}">शुरुआत तारीख:</label>
                     <input type="date" id="startDate${producerId}" onchange="updateDateRangeInfo(${producerId})" 
-                           min="${window.minDate}" max="${window.maxDate}" />
+                           min="${window.minDate}" max="${window.maxDate}" value="${producerData?.startDate || ''}" />
                     <i class="fas fa-calendar"></i>
                 </div>
                 <div class="input-group calendar-container">
                     <label for="endDate${producerId}">अंतिम तारीख:</label>
                     <input type="date" id="endDate${producerId}" onchange="updateDateRangeInfo(${producerId})" 
-                           min="${window.minDate}" max="${window.maxDate}" />
+                           min="${window.minDate}" max="${window.maxDate}" value="${producerData?.endDate || ''}" />
                     <i class="fas fa-calendar"></i>
                 </div>
                 <div class="days-info" id="dateRangeInfo-${producerId}">
@@ -666,8 +1155,14 @@
 
         container.appendChild(div);
         updateNumProducersInput();
-        setDefaultDatesForProducer(producerId);
+        
+        // Set dates if not already set
+        if (!producerData) {
+            setDefaultDatesForProducer(producerId);
+        }
+        
         updateDaysInfo(producerId);
+        updateDateRangeInfo(producerId);
         
         // Add event listeners for decimal buttons
         setTimeout(() => {
@@ -860,10 +1355,12 @@
     // Update days info for simple days input
     function updateDaysInfo(producerId) {
         const numDays = document.getElementById(`numDays${producerId}`).value;
+        const days = parseInt(numDays) || 0;
         const daysCountElement = document.getElementById(`daysCount-${producerId}`);
         
         if (daysCountElement) {
-            daysCountElement.textContent = `${numDays} दिन`;
+            daysCountElement.textContent = `${days} दिन`;
+            daysCountElement.style.color = days > 0 ? "var(--success)" : "var(--error)";
         }
     }
 
@@ -975,6 +1472,8 @@
             `;
         }
 
+        const creatorName = document.getElementById('creatorName').value || '';
+
         resultHTML += `
                     </table>
                 </div>
@@ -997,12 +1496,25 @@
                         <div class="summary-label">कुल कीमत</div>
                     </div>
                 </div>
+                
+                <div class="calculation-date">
+                    <i class="fas fa-calendar-alt"></i> गणना दिनांक: ${new Date().toLocaleDateString('hi-IN')}
+                </div>
             
                 <div class="share-buttons">
                     <button class="success" onclick="shareViaWhatsApp()">
                         <i class="fab fa-whatsapp"></i> WhatsApp पर साझा करें
                     </button>
+                    <button class="share-image-button" onclick="shareAsImage()">
+                        <i class="fas fa-image"></i> इमेज के रूप में साझा करें
+                    </button>
+                    <button class="print-button" onclick="printResults()">
+                        <i class="fas fa-print"></i> प्रिंट करें
+                    </button>
                 </div>
+                ${creatorName ? `<div class="credit" style="margin-top: 15px; border-top: none;">
+                    <span class="created-by">Created by: ${creatorName}</span>
+                </div>` : ''}
             </div>
         `;
 
@@ -1017,8 +1529,53 @@
     // Share results via WhatsApp
     function shareViaWhatsApp() {
         const resultText = generateResultText();
-        const encodedText = encodeURIComponent(resultText);
+        currentWhatsAppMessage = resultText;
+        
+        // Show WhatsApp message preview
+        document.getElementById('whatsappMessage').textContent = resultText;
+        document.getElementById('whatsappOverlay').classList.add('active');
+        document.getElementById('whatsappMessageContainer').classList.add('active');
+    }
+    
+    // Open WhatsApp with the message
+    function openWhatsApp() {
+        const encodedText = encodeURIComponent(currentWhatsAppMessage);
         window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+        closeWhatsAppMessage();
+    }
+    
+    // Copy WhatsApp message to clipboard
+    function copyWhatsAppMessage() {
+        // Create a temporary textarea element to hold the text
+        const textarea = document.createElement('textarea');
+        textarea.value = currentWhatsAppMessage;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        
+        // Select and copy the text
+        textarea.select();
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showNotification('संदेश क्लिपबोर्ड पर कॉपी किया गया');
+            } else {
+                showNotification('कॉपी करने में त्रुटि', 'error');
+            }
+        } catch (err) {
+            showNotification('कॉपी करने में त्रुटि', 'error');
+            console.error('Could not copy text: ', err);
+        }
+        
+        // Clean up
+        document.body.removeChild(textarea);
+    }
+    
+    // Close WhatsApp message preview
+    function closeWhatsAppMessage() {
+        document.getElementById('whatsappOverlay').classList.remove('active');
+        document.getElementById('whatsappMessageContainer').classList.remove('active');
     }
     
     // Generate text version of results for sharing
@@ -1098,7 +1655,47 @@
         text += `कुल कीमत: ₹${overallTotal.toFixed(2)}\n\n`;
         text += `कैलकुलेशन दिनांक: ${new Date().toLocaleDateString('hi-IN')}`;
         
+        // Add creator name only if available
+        const creatorName = document.getElementById('creatorName').value;
+        if (creatorName) {
+            text += `\n\nCreated by: ${creatorName}`;
+        }
+        
         return text;
+    }
+    
+    // Share results as an image
+    function shareAsImage() {
+        // Create a simplified version for the image
+        const resultSection = document.getElementById('result');
+        const originalHTML = resultSection.innerHTML;
+        
+        // Remove buttons for image
+        resultSection.querySelector('.share-buttons').style.display = 'none';
+        
+        // Use html2canvas to capture the result section as an image
+        html2canvas(resultSection).then(canvas => {
+            // Convert canvas to data URL
+            const imageData = canvas.toDataURL('image/png');
+            
+            // Restore the buttons
+            resultSection.querySelector('.share-buttons').style.display = 'flex';
+            
+            // Create a temporary link for downloading
+            const link = document.createElement('a');
+            link.href = imageData;
+            link.download = 'दूध_की_कीमत_कैलकुलेशन.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('इमेज डाउनलोड हो गई है, आप इसे WhatsApp पर साझा कर सकते हैं');
+        });
+    }
+    
+    // Print results
+    function printResults() {
+        window.print();
     }
 
     // Format date to DD/MM/YYYY
@@ -1112,7 +1709,10 @@
     // Adjust producer blocks based on input
     function adjustProducerBlocks() {
         const num = parseInt(document.getElementById('numProducers').value);
-        if (isNaN(num) || num < 1) return;
+        if (isNaN(num) || num < 1) {
+            showNotification('कृपया वैध संख्या दर्ज करें', 'error');
+            return;
+        }
 
         const container = document.getElementById('producersContainer');
         const currentCount = container.children.length;
@@ -1134,21 +1734,55 @@
         document.getElementById('numProducers').value = container.children.length;
     }
 
+    // Show reset confirmation dialog
+    function showResetConfirmation() {
+        document.getElementById('confirmationDialog').classList.add('active');
+    }
+
+    // Hide reset confirmation dialog
+    function hideResetConfirmation() {
+        document.getElementById('confirmationDialog').classList.remove('active');
+    }
+
     // Reset the form
     function resetForm() {
-        if (confirm('क्या आप वाकई फॉर्म रीसेट करना चाहते हैं? सभी डेटा हट जाएगा।')) {
-            const container = document.getElementById('producersContainer');
-            container.innerHTML = '';
-            producersCount = 0;
-            producerDateTypes = {};
-            document.getElementById('result').classList.add('hidden');
-            document.getElementById('numProducers').value = 1;
-            addProducer();
+        hideResetConfirmation();
+        
+        const container = document.getElementById('producersContainer');
+        container.innerHTML = '';
+        producersCount = 0;
+        producerDateTypes = {};
+        document.getElementById('result').classList.add('hidden');
+        document.getElementById('numProducers').value = 1;
+        document.getElementById('defaultPrice').value = '';
+        defaultPrice = 0;
+        
+        // Clear localStorage
+        localStorage.removeItem('milkDefaultPrice');
+        localStorage.removeItem('milkCalculatorData');
+        
+        // Add a fresh producer
+        addProducer();
+        
+        showNotification('फॉर्म सफलतापूर्वक रीसेट किया गया');
+    }
+
+    // Load saved data from localStorage
+    function loadData() {
+        try {
+            const savedPrice = localStorage.getItem('milkDefaultPrice');
+            if (savedPrice) {
+                document.getElementById('defaultPrice').value = savedPrice;
+                defaultPrice = parseFloat(savedPrice);
+            }
+        } catch (error) {
+            console.error('Error loading data:', error);
         }
     }
 
     // Initialize the form when page loads
     window.onload = init;
 </script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </body>
 </html>
