@@ -965,6 +965,7 @@
             <button type="button" class="danger" onclick="closeWhatsAppMessage()"><i class="fas fa-times"></i> बंद करें</button>
             <button type="button" class="copy-button" onclick="copyWhatsAppMessage()"><i class="fas fa-copy"></i> कॉपी करें</button>
             <button type="button" class="success" onclick="openWhatsApp()"><i class="fab fa-whatsapp"></i> WhatsApp खोलें</button>
+            <button type="button" class="share-image-button" onclick="shareImageOnWhatsApp()"><i class="fas fa-image"></i> इमेज साझा करें</button>
         </div>
     </div>
 
@@ -990,6 +991,7 @@
     let producerDateTypes = {}; // Store date type for each producer
     let defaultPrice = 0;
     let currentWhatsAppMessage = '';
+    let currentResultImage = '';
     let isDarkMode = localStorage.getItem('darkMode') === 'true';
 
     // Initialize the form
@@ -1301,9 +1303,11 @@
         }
     }
 
-    // Renumber producers after removal
+    // Renumber producers after removal - FIXED VERSION
     function renumberProducers() {
         const producerBlocks = document.querySelectorAll('.producerBlock');
+        producersCount = producerBlocks.length;
+        
         producerBlocks.forEach((block, index) => {
             const newId = index + 1;
             const producerTitle = block.querySelector('.producer-title');
@@ -1319,9 +1323,19 @@
                 // Update input IDs and event handlers
                 const inputs = block.querySelectorAll('input, button, div');
                 inputs.forEach(input => {
-                    if (input.id) input.id = input.id.replace(oldId, newId);
-                    if (input.onclick) input.onclick = new Function(input.onclick.toString().replace(oldId, newId));
-                    if (input.onchange) input.onchange = new Function(input.onchange.toString().replace(oldId, newId));
+                    if (input.id) {
+                        input.id = input.id.replace(oldId, newId);
+                    }
+                    if (input.onclick) {
+                        const onclickStr = input.onclick.toString();
+                        const newOnclickStr = onclickStr.replace(new RegExp(oldId, 'g'), newId);
+                        input.onclick = new Function('return ' + newOnclickStr)();
+                    }
+                    if (input.onchange) {
+                        const onchangeStr = input.onchange.toString();
+                        const newOnchangeStr = onchangeStr.replace(new RegExp(oldId, 'g'), newId);
+                        input.onchange = new Function('return ' + newOnchangeStr)();
+                    }
                 });
                 
                 // Update producerDateTypes
@@ -1525,8 +1539,34 @@
         resultDiv.innerHTML = resultHTML;
         resultDiv.classList.remove('hidden');
         
+        // Create image for WhatsApp sharing
+        createResultImage();
+        
         // Scroll to results
         resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Create result image for sharing
+    function createResultImage() {
+        const resultSection = document.getElementById('result');
+        const originalHTML = resultSection.innerHTML;
+        
+        // Temporarily remove buttons for image
+        const shareButtons = resultSection.querySelector('.share-buttons');
+        if (shareButtons) {
+            shareButtons.style.display = 'none';
+        }
+        
+        // Use html2canvas to capture the result section as an image
+        html2canvas(resultSection).then(canvas => {
+            // Convert canvas to data URL
+            currentResultImage = canvas.toDataURL('image/png');
+            
+            // Restore the buttons
+            if (shareButtons) {
+                shareButtons.style.display = 'flex';
+            }
+        });
     }
     
     // Share results via WhatsApp
@@ -1544,6 +1584,25 @@
     function openWhatsApp() {
         const encodedText = encodeURIComponent(currentWhatsAppMessage);
         window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+        closeWhatsAppMessage();
+    }
+    
+    // Share image on WhatsApp
+    function shareImageOnWhatsApp() {
+        if (!currentResultImage) {
+            showNotification('पहले कैलकुलेशन करें', 'error');
+            return;
+        }
+        
+        // Create a temporary link for the image
+        const link = document.createElement('a');
+        link.href = currentResultImage;
+        link.download = 'दूध_की_कीमत_कैलकुलेशन.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('इमेज डाउनलोड हो गई है, आप इसे WhatsApp पर साझा कर सकते हैं');
         closeWhatsAppMessage();
     }
     
@@ -1669,31 +1728,20 @@
     
     // Share results as an image
     function shareAsImage() {
-        // Create a simplified version for the image
-        const resultSection = document.getElementById('result');
-        const originalHTML = resultSection.innerHTML;
+        if (!currentResultImage) {
+            showNotification('पहले कैलकुलेशन करें', 'error');
+            return;
+        }
         
-        // Remove buttons for image
-        resultSection.querySelector('.share-buttons').style.display = 'none';
+        // Create a temporary link for downloading
+        const link = document.createElement('a');
+        link.href = currentResultImage;
+        link.download = 'दूध_की_कीमत_कैलकुलेशन.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
         
-        // Use html2canvas to capture the result section as an image
-        html2canvas(resultSection).then(canvas => {
-            // Convert canvas to data URL
-            const imageData = canvas.toDataURL('image/png');
-            
-            // Restore the buttons
-            resultSection.querySelector('.share-buttons').style.display = 'flex';
-            
-            // Create a temporary link for downloading
-            const link = document.createElement('a');
-            link.href = imageData;
-            link.download = 'दूध_की_कीमत_कैलकुलेशन.png';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showNotification('इमेज डाउनलोड हो गई है, आप इसे WhatsApp पर साझा कर सकते हैं');
-        });
+        showNotification('इमेज डाउनलोड हो गई है, आप इसे WhatsApp पर साझा कर सकते हैं');
     }
     
     // Print results
@@ -1759,6 +1807,7 @@
         document.getElementById('numProducers').value = 1;
         document.getElementById('defaultPrice').value = '';
         defaultPrice = 0;
+        currentResultImage = '';
         
         // Clear localStorage
         localStorage.removeItem('milkDefaultPrice');
