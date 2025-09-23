@@ -1080,6 +1080,9 @@
         // Initialize date type for this producer
         producerDateTypes[producerId] = producerData?.dateType || 'days';
 
+        // Determine the price value - use producerData price if available, otherwise use defaultPrice
+        const priceValue = producerData?.price !== undefined ? producerData.price : (defaultPrice > 0 ? defaultPrice : '');
+
         const div = document.createElement('div');
         div.className = 'producerBlock';
         div.id = `producer-${producerId}`;
@@ -1106,7 +1109,7 @@
                 
                 <div class="input-group decimal-input">
                     <label for="price${producerId}">कीमत प्रति लीटर (₹):</label>
-                    <input type="text" id="price${producerId}" class="price" min="0" step="0.01" placeholder="दूध की कीमत" value="" required 
+                    <input type="text" id="price${producerId}" class="price" min="0" step="0.01" placeholder="दूध की कीमत" value="${priceValue}" required 
                            oninput="validateDecimalInput(this)" inputmode="decimal" />
                 </div>
             </div>
@@ -1124,7 +1127,7 @@
             <div class="input-row ${producerDateTypes[producerId] === 'days' ? '' : 'hidden'}" id="daysInput-${producerId}">
                 <div class="input-group">
                     <label for="numDays${producerId}">दिनों की संख्या:</label>
-                    <input type="number" id="numDays${producerId}" value="" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" 
+                    <input type="number" id="numDays${producerId}" value="${producerData?.numDays || ''}" min="1" placeholder="दिनों की संख्या" onchange="updateDaysInfo(${producerId})" 
                            oninput="validateNumberInput(this)" inputmode="numeric" />
                 </div>
                 <div class="days-info" id="daysInfo-${producerId}">
